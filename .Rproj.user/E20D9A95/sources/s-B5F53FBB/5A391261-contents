@@ -1,0 +1,16 @@
+---
+title: "Lab3"
+author: "Diana Dewalkd, Eliott Doyle"
+date: "1/31/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(rio)
+library(here)
+```
+
+
