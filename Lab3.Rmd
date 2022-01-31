@@ -1,9 +1,10 @@
 ---
 title: "Lab3"
-author: "Diana Dewalkd, Eliott Doyle"
+author: "Diana Dewald, Eliott Doyle"
 date: "1/31/2022"
 output: html_document
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -16,7 +17,7 @@ honey <- import(here("honeyproduction.csv"))
 #View(honey)
 ```
 
-# 1. Visualize the total production of honey across years by state Use color to highlight the west coast (Washington, Oregon, and California) with a different color used for each west coast state.
+# 1. Visualize the total production of honey across years by state. Use color to highlight the west coast (Washington, Oregon, and California) with a different color used for each west coast state.
 
 ```{r q1, echo = FALSE, warning = FALSE, message = FALSE}
 
