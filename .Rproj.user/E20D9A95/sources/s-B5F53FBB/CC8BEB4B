@@ -1,27 +1,26 @@
 {
-    "id": "27BAC659",
-    "path": "~/Documents/School/Oregon/Year 2/02Winter/EDLD652/EDLD652-Lab2/Lab2.Rmd",
+    "id": "CC8BEB4B",
+    "path": "~/Documents/School/Oregon/My Research/FYP/Data/2021 spring/1 FYP Spring Demographics.Rmd",
     "project_path": null,
     "type": "r_markdown",
     "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1643670616384.0,
+    "created": 1643671340117.0,
     "source_on_save": false,
-    "relative_order": 2,
+    "relative_order": 3,
     "properties": {
-        "chunk_output_type": "console",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "27,12",
-        "scrollLine": "6"
+        "cursorPosition": "26,7",
+        "scrollLine": "3"
     },
     "folds": "",
-    "lastKnownWriteTime": 1643419357,
+    "lastKnownWriteTime": 1638318718,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1643419357,
+    "last_content_update": 1638318718,
     "read_only": false,
     "read_only_alternatives": []
 }
