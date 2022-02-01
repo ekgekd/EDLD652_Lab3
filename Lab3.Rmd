@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(rio)
 library(here)
+library(colorBlindness)
 
 honey <- import(here("honeyproduction.csv"))
 #View(honey)
@@ -20,13 +21,33 @@ honey <- import(here("honeyproduction.csv"))
 # 1. Visualize the total production of honey across years by state. Use color to highlight the west coast (Washington, Oregon, and California) with a different color used for each west coast state.
 
 ```{r q1, echo = FALSE, warning = FALSE, message = FALSE}
-
+honeyplot <- honey %>% 
+  ggplot(aes(x = totalprod,
+             y = reorder(state, totalprod))) +
+  geom_col(fill = "goldenrod2",
+           alpha = .8) +
+    geom_col(data = filter(honey,
+                           state == "OR"),
+           fill = "khaki1") +
+  geom_col(data = filter(honey,
+                           state == "WA"),
+           fill = "aquamarine4") +
+  geom_col(data = filter(honey,
+                           state == "CA"),
+           fill = "cadetblue3") +
+  theme_classic() +
+  labs(
+    title = "Honey production by US state",
+    x = "Total Honey Production",
+    y = "State"
+  ) 
+honeyplot
 ```
 
 # 2. Reproduce the plot according three different kinds of color blindness, as well as a desaturated version.
 
 ```{r q2, echo = FALSE, warning = FALSE, message = FALSE}
-
+colorBlindness::cvdPlot(honeyplot)
 ```
 
 # 3. Reproduce the plot using a color blind safe palette.
