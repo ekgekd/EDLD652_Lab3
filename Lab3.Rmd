@@ -26,7 +26,7 @@ honeyplot <- honey %>%
              y = reorder(state, totalprod))) +
   geom_col(fill = "goldenrod2",
            alpha = .8) +
-    geom_col(data = filter(honey,
+  geom_col(data = filter(honey,
                            state == "OR"),
            fill = "khaki1") +
   geom_col(data = filter(honey,
@@ -39,8 +39,8 @@ honeyplot <- honey %>%
   labs(
     title = "Honey production by US state",
     x = "Total Honey Production",
-    y = "State"
-  ) 
+    y = "State") 
+
 honeyplot
 ```
 
@@ -53,7 +53,33 @@ colorBlindness::cvdPlot(honeyplot)
 # 3. Reproduce the plot using a color blind safe palette.
 
 ```{r q3, echo = FALSE, warning = FALSE, message = FALSE}
+#making a new df with a column for region that I will use for my palette
+honey_new <- honey
+region <- data.frame(state = c('CA', 'OR', 'WA'),
+                     region = c('CA', 'OR', 'WA'))
+honey_new <- left_join(honey_new, region, by = "state")
+honey_new[["region"]][is.na(honey_new[["region"]])] <- "Other"
+#View(honey_new)
 
+#palette I want to use:
+cbbPalette <- c("#000000", "#E69F00", "#F0E442","#009E73", "#0072B2", "#D55E00", "#CC79A7")
+
+honeyplot_cb <- honey_new %>% 
+  ggplot(aes(x = totalprod,
+             y = reorder(state, totalprod))) +
+  geom_col(aes(fill = region),
+           alpha = .9) +
+  scale_fill_manual(values=cbbPalette) +
+  theme_classic() +
+  labs(
+    title = "Honey production by US state",
+    x = "Total Honey Production",
+    y = "State") 
+
+honeyplot_cb
+
+
+colorBlindness::cvdPlot(honeyplot_cb)
 ```
 
 # 4. Download the file here denoting the region and division of each state.
