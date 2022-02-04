@@ -1,0 +1,151 @@
+---
+title: "Lab3"
+author: "Diana Dewald, Eliott Doyle"
+date: "1/31/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(ggplot2)
+library(rio)
+library(here)
+library(colorBlindness)
+library(usmap)
+library(colorspace)
+
+honey <- import(here("honeyproduction.csv"))
+#View(honey)
+```
+
+# 1. Visualize the total production of honey across years by state. Use color to highlight the west coast (Washington, Oregon, and California) with a different color used for each west coast state.
+
+```{r q1, echo = FALSE, warning = FALSE, message = FALSE}
+honeyplot <- honey %>% 
+  ggplot(aes(x = totalprod,
+             y = reorder(state, totalprod))) +
+  geom_col(fill = "goldenrod2",
+           alpha = .8) +
+  geom_col(data = filter(honey,
+                           state == "OR"),
+           fill = "khaki1") +
+  geom_col(data = filter(honey,
+                           state == "WA"),
+           fill = "aquamarine4") +
+  geom_col(data = filter(honey,
+                           state == "CA"),
+           fill = "cadetblue3") +
+  theme_classic() +
+  labs(
+    title = "Honey production by US state",
+    x = "Total Honey Production",
+    y = "State") 
+
+honeyplot
+```
+
+# 2. Reproduce the plot according three different kinds of color blindness, as well as a desaturated version.
+
+```{r q2, echo = FALSE, warning = FALSE, message = FALSE}
+colorBlindness::cvdPlot(honeyplot)
+```
+
+# 3. Reproduce the plot using a color blind safe palette.
+
+```{r q3, echo = FALSE, warning = FALSE, message = FALSE}
+#making a new df with a column for region that I will use for my palette
+honey_new <- honey
+region <- data.frame(state = c('CA', 'OR', 'WA'),
+                     region = c('CA', 'OR', 'WA'))
+honey_new <- left_join(honey_new, region, by = "state")
+honey_new[["region"]][is.na(honey_new[["region"]])] <- "Other"
+#View(honey_new)
+
+#palette I want to use:
+cbbPalette <- c("#000000", "#E69F00", "#F0E442","#009E73", "#0072B2", "#D55E00", "#CC79A7")
+
+honeyplot_cb <- honey_new %>% 
+  ggplot(aes(x = totalprod,
+             y = reorder(state, totalprod))) +
+  geom_col(aes(fill = region),
+           alpha = .9) +
+  scale_fill_manual(values=cbbPalette) +
+  theme_classic() +
+  labs(
+    title = "Honey production by US state",
+    x = "Total Honey Production",
+    y = "State") 
+
+honeyplot_cb
+
+
+colorBlindness::cvdPlot(honeyplot_cb)
+```
+
+# 4. Download the file here denoting the region and division of each state.
+* Join the file with your honey file 
+* Produce a bar plot displaying the average honey for each state (collapsing across years).
+* Use color to highlight the region of the country the state is from.
+* Note patterns you notice.
+
+```{r q4, echo = FALSE, warning = FALSE, message = FALSE}
+div <- import(here("divisions.csv"))
+
+# merging the region column from div data to honey data
+region.1 <- data.frame(state = div$`State Code`,
+                     region.1 = div$Region)
+full_new <- left_join(honey, region.1, by = "state")
+
+
+honey_bar <- full_new %>% 
+  ggplot(aes(x = totalprod,
+             y = reorder(state, totalprod))) +
+  geom_col(aes(fill = region.1), alpha = .8) +
+   theme_classic() +
+  labs(
+    title = "Honey production by US state",
+    x = "Total Honey Production",
+    y = "State", 
+    fill = "Region") 
+
+honey_bar
+
+
+```
+
+In terms of patterns, it seems as though the midwest and west produce the most honey, followed by the south, and the northeast producing the least honey.
+
+# 5. Create a heatmap displaying the average honey production across years by region (averaging across states within region).
+
+```{r q5, echo = FALSE, warning = FALSE, message = FALSE}
+
+honey_heat <- full_new %>% 
+  ggplot(aes(year, region.1)) +
+  geom_tile(aes(fill = totalprod, width=1, height=.9)) + 
+  theme_classic() +
+  labs(title = "Honey production by US Region", x = "Year", y = "Region") +
+  scale_fill_continuous_sequential("Heat")
+
+
+honey_heat
+
+```
+
+
+# 6. Create at least one more plot of your choosing using color to distinguish, represent data values, or highlight.
+
+```{r q6, echo = FALSE, warning = FALSE, message = FALSE}
+
+plot_usmap(data = full_new, values = "totalprod", color = "black") +
+  scale_fill_continuous(name = "Honey Production", label = scales::comma) +
+  theme(legend.position = "right") +
+  scale_fill_viridis_c(na.value = "transparent") + 
+  labs(title = "Honey Production by State from 1998-2012",
+       fill = "Amount of Honey")
+
+```

@@ -3,6 +3,8 @@ title: "Lab3"
 author: "Diana Dewald, Eliott Doyle"
 date: "1/31/2022"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -10,9 +12,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(ggplot2)
 library(rio)
 library(here)
 library(colorBlindness)
+library(usmap)
+library(colorspace)
 
 honey <- import(here("honeyproduction.csv"))
 #View(honey)
@@ -88,9 +93,59 @@ colorBlindness::cvdPlot(honeyplot_cb)
 * Use color to highlight the region of the country the state is from.
 * Note patterns you notice.
 
+```{r q4, echo = FALSE, warning = FALSE, message = FALSE}
+div <- import(here("divisions.csv"))
+
+# merging the region column from div data to honey data
+region.1 <- data.frame(state = div$`State Code`,
+                     region.1 = div$Region)
+full_new <- left_join(honey, region.1, by = "state")
+
+
+honey_bar <- full_new %>% 
+  ggplot(aes(x = totalprod,
+             y = reorder(state, totalprod))) +
+  geom_col(aes(fill = region.1), alpha = .8) +
+   theme_classic() +
+  labs(
+    title = "Honey production by US state",
+    x = "Total Honey Production",
+    y = "State", 
+    fill = "Region") 
+
+honey_bar
+
+
+```
+
+In terms of patterns, it seems as though the midwest and west produce the most honey, followed by the south, and the northeast producing the least honey.
+
 # 5. Create a heatmap displaying the average honey production across years by region (averaging across states within region).
+
+```{r q5, echo = FALSE, warning = FALSE, message = FALSE}
+
+honey_heat <- full_new %>% 
+  ggplot(aes(year, region.1)) +
+  geom_tile(aes(fill = totalprod, width=1, height=.9)) + 
+  theme_classic() +
+  labs(title = "Honey production by US Region", x = "Year", y = "Region") +
+  scale_fill_continuous_sequential("Heat")
+
+
+honey_heat
+
+```
+
 
 # 6. Create at least one more plot of your choosing using color to distinguish, represent data values, or highlight.
 
+```{r q6, echo = FALSE, warning = FALSE, message = FALSE}
 
+plot_usmap(data = full_new, values = "totalprod", color = "black") +
+  scale_fill_continuous(name = "Honey Production", label = scales::comma) +
+  theme(legend.position = "right") +
+  scale_fill_viridis_c(na.value = "transparent") + 
+  labs(title = "Honey Production by State from 1998-2012",
+       fill = "Amount of Honey")
 
+```
