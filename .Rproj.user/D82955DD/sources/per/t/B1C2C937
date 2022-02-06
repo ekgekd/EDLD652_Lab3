@@ -3,7 +3,7 @@
     "path": "~/Oregon/edld 652/EDLD652_Lab3/Lab3.Rmd",
     "project_path": "Lab3.Rmd",
     "type": "r_markdown",
-    "hash": "1694643894",
+    "hash": "1301242795",
     "contents": "",
     "dirty": false,
     "created": 1643951914728.0,
@@ -12,17 +12,17 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "136,0",
-        "scrollLine": "119",
-        "last_setup_crc32": "B4F16D549f3b8d8c",
+        "cursorPosition": "122,153",
+        "scrollLine": "121",
+        "last_setup_crc32": "",
         "chunk_output_type": "console"
     },
     "folds": "",
-    "lastKnownWriteTime": 1643952090,
+    "lastKnownWriteTime": 1644172264,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1643952090750,
+    "last_content_update": 1644172264070,
     "read_only": false,
     "read_only_alternatives": []
 }
